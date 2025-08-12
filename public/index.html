@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omegle Clone - Talk to Strangers!</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Omegle Clone</h1>
+            <p class="tagline">Talk to strangers!</p>
+        </header>
+
+        <div id="welcome-screen" class="screen active">
+            <div class="welcome-content">
+                <h2>Start chatting with strangers</h2>
+                <p>Click the button below to start a video chat with a random stranger</p>
+                <button id="start-btn" class="primary-btn">Start Video Chat</button>
+                <div class="warning">
+                    <p><strong>⚠️ Warning:</strong> Please be respectful to others. Inappropriate behavior is not tolerated.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="waiting-screen" class="screen">
+            <div class="waiting-content">
+                <div class="loader"></div>
+                <h2>Looking for someone you can talk to...</h2>
+                <p>Please wait while we connect you with a stranger</p>
+                <button id="cancel-btn" class="secondary-btn">Cancel</button>
+            </div>
+        </div>
+
+        <div id="chat-screen" class="screen">
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <video id="local-video" autoplay muted playsinline></video>
+                    <span class="video-label">You</span>
+                </div>
+                <div class="video-wrapper">
+                    <video id="remote-video" autoplay playsinline></video>
+                    <span class="video-label">Stranger</span>
+                </div>
+            </div>
+            <div class="chat-controls">
+                <button id="disconnect-btn" class="danger-btn">Disconnect</button>
+                <button id="next-btn" class="primary-btn">Next</button>
+                <div class="connection-status">
+                    <span id="status-text">Connected</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
