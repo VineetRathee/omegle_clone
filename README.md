@@ -1,4 +1,4 @@
-# Omegle Clone - Video Chat Application
+# Omeglee - Video Chat Application
 
 A simple video chat application that connects random strangers for video conversations, similar to Omegle. Built using WebRTC for peer-to-peer video communication and Socket.io for signaling.
 

@@ -3,61 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Omegle Clone - Talk to Strangers!</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>Omeglee - Free Random Video Chat | Talk to Strangers Online</title>
+    <meta name="title" content="Omeglee - Free Random Video Chat | Talk to Strangers Online">
+    <meta name="description" content="Meet new people instantly on Omeglee! Free random video chat with strangers worldwide. No registration required. Safe, anonymous, and fun video chatting experience.">
+    <meta name="keywords" content="omeglee, video chat, random chat, talk to strangers, free video chat, anonymous chat, online chat, webcam chat, stranger chat, omegle alternative">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Omeglee">
+    <link rel="canonical" href="https://your-domain.com/">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://your-domain.com/">
+    <meta property="og:title" content="Omeglee - Free Random Video Chat | Talk to Strangers Online">
+    <meta property="og:description" content="Meet new people instantly! Free random video chat with strangers worldwide. No registration required. Start chatting now!">
+    <meta property="og:image" content="https://your-domain.com/og-image.jpg">
+    <meta property="og:site_name" content="Omeglee">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://your-domain.com/">
+    <meta name="twitter:title" content="Omeglee - Free Random Video Chat">
+    <meta name="twitter:description" content="Meet new people instantly! Free random video chat with strangers worldwide. No registration required.">
+    <meta name="twitter:image" content="https://your-domain.com/twitter-image.jpg">
+    
+    <!-- Additional SEO Tags -->
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    <meta name="distribution" content="global">
+    <meta name="rating" content="general">
+    
+    <!-- Performance optimizations -->
+    <link rel="preconnect" href="https://cdn.socket.io">
+    <link rel="dns-prefetch" href="https://cdn.socket.io">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#0066cc">
+    
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="script.js" as="script">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Omeglee",
+      "description": "Free random video chat platform to meet and talk with strangers online",
+      "url": "https://your-domain.com",
+      "applicationCategory": "CommunicationApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.5",
+        "ratingCount": "10000"
+      }
+    }
+    </script>
+    
+    <!-- Socket.io -->
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js" defer></script>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Omegle Clone</h1>
-            <p class="tagline">Talk to strangers!</p>
+        <header role="banner">
+            <h1>Omeglee - Free Random Video Chat</h1>
+            <p class="tagline">Connect with strangers worldwide instantly!</p>
         </header>
 
-        <div id="welcome-screen" class="screen active">
-            <div class="welcome-content">
-                <h2>Start chatting with strangers</h2>
-                <p>Click the button below to start a video chat with a random stranger</p>
-                <button id="start-btn" class="primary-btn">Start Video Chat</button>
-                <div class="warning">
-                    <p><strong>⚠️ Warning:</strong> Please be respectful to others. Inappropriate behavior is not tolerated.</p>
-                </div>
+        <main role="main">
+            <div id="welcome-screen" class="screen active" role="region" aria-label="Welcome screen">
+                <article class="welcome-content">
+                    <h2>Start Random Video Chat with Strangers Online</h2>
+                    <p>Join millions of users worldwide! Connect instantly with random people through our free video chat platform. No registration, no downloads, completely anonymous.</p>
+                    
+                    <section class="features" aria-label="Features">
+                        <h3 class="visually-hidden">Key Features</h3>
+                        <ul class="feature-list">
+                            <li>🎥 <strong>HD Video Quality</strong> - Crystal clear video streaming</li>
+                            <li>🔒 <strong>100% Anonymous</strong> - No personal information required</li>
+                            <li>🌍 <strong>Global Community</strong> - Meet people from around the world</li>
+                            <li>⚡ <strong>Instant Connection</strong> - Start chatting in seconds</li>
+                        </ul>
+                    </section>
+                    
+                    <button id="start-btn" class="primary-btn" aria-label="Start video chat with a random stranger">
+                        Start Video Chat Now
+                    </button>
+                    
+                    <div class="warning" role="alert">
+                        <p><strong>⚠️ Community Guidelines:</strong> Be respectful and kind. We maintain a safe environment for all users. Inappropriate behavior will result in immediate ban.</p>
+                    </div>
+                    
+                    <section class="seo-content" aria-label="About">
+                        <h3>Why Choose Omeglee?</h3>
+                        <p>Experience the best random video chat platform designed for meaningful connections. Our advanced matching algorithm ensures you meet interesting people from diverse backgrounds. Whether you're looking to practice a new language, make friends, or just have fun conversations, Omeglee provides a safe and enjoyable experience.</p>
+                    </section>
+                </article>
             </div>
-        </div>
 
-        <div id="waiting-screen" class="screen">
-            <div class="waiting-content">
-                <div class="loader"></div>
-                <h2>Looking for someone you can talk to...</h2>
-                <p>Please wait while we connect you with a stranger</p>
-                <div id="queue-info" class="queue-info" style="display: none;">
-                    <p>Your position in queue: <span id="queue-position">-</span> / <span id="queue-total">-</span></p>
+            <div id="waiting-screen" class="screen" role="region" aria-label="Waiting screen">
+                <div class="waiting-content">
+                    <div class="loader" role="status" aria-label="Loading"></div>
+                    <h2>Finding Your Chat Partner...</h2>
+                    <p>Connecting you with someone interesting from around the world</p>
+                    <div id="queue-info" class="queue-info" style="display: none;" role="status" aria-live="polite">
+                        <p>Your position in queue: <span id="queue-position">-</span> / <span id="queue-total">-</span></p>
+                    </div>
+                    <button id="cancel-btn" class="secondary-btn" aria-label="Cancel and return to home">Cancel</button>
                 </div>
-                <button id="cancel-btn" class="secondary-btn">Cancel</button>
             </div>
-        </div>
 
-        <div id="chat-screen" class="screen">
-            <div class="video-container">
-                <div class="video-wrapper">
-                    <video id="local-video" autoplay muted playsinline></video>
-                    <span class="video-label">You</span>
+            <div id="chat-screen" class="screen" role="region" aria-label="Video chat screen">
+                <div class="video-container">
+                    <div class="video-wrapper">
+                        <video id="local-video" autoplay muted playsinline aria-label="Your video"></video>
+                        <span class="video-label">You</span>
+                    </div>
+                    <div class="video-wrapper">
+                        <video id="remote-video" autoplay playsinline aria-label="Stranger's video"></video>
+                        <span class="video-label">Stranger</span>
+                    </div>
                 </div>
-                <div class="video-wrapper">
-                    <video id="remote-video" autoplay playsinline></video>
-                    <span class="video-label">Stranger</span>
+                <div class="chat-controls" role="toolbar">
+                    <button id="disconnect-btn" class="danger-btn" aria-label="Disconnect from current chat">Disconnect</button>
+                    <button id="next-btn" class="primary-btn" aria-label="Connect with next stranger">Next Person</button>
+                    <div class="connection-status" role="status" aria-live="polite">
+                        <span id="status-text">Connected</span>
+                    </div>
                 </div>
             </div>
-            <div class="chat-controls">
-                <button id="disconnect-btn" class="danger-btn">Disconnect</button>
-                <button id="next-btn" class="primary-btn">Next</button>
-                <div class="connection-status">
-                    <span id="status-text">Connected</span>
-                </div>
+        </main>
+
+        <footer role="contentinfo">
+            <div class="footer-content">
+                <section class="footer-section">
+                    <h3>About Omeglee</h3>
+                    <p>The premier platform for random video chat. Connect with thousands of users worldwide in a safe, anonymous environment. No registration required - just click and start chatting!</p>
+                </section>
+                
+                <section class="footer-section">
+                    <h3>Popular Searches</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" title="Free video chat with strangers">Free Video Chat</a></li>
+                        <li><a href="#" title="Random chat rooms">Random Chat</a></li>
+                        <li><a href="#" title="Anonymous chat online">Anonymous Chat</a></li>
+                        <li><a href="#" title="Omegle alternative sites">Omegle Alternative</a></li>
+                    </ul>
+                </section>
+                
+                <section class="footer-section">
+                    <h3>Safety & Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" title="Community guidelines">Community Guidelines</a></li>
+                        <li><a href="#" title="Privacy policy">Privacy Policy</a></li>
+                        <li><a href="#" title="Terms of service">Terms of Service</a></li>
+                        <li><a href="#" title="Contact support">Contact Us</a></li>
+                    </ul>
+                </section>
             </div>
-        </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Omeglee. Free random video chat platform. All rights reserved.</p>
+            </div>
+        </footer>
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>

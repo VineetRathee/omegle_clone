@@ -3,6 +3,7 @@ const http = require('http');
 const socketIO = require('socket.io');
 const cors = require('cors');
 const path = require('path');
+const compression = require('compression');
 
 const app = express();
 const server = http.createServer(app);
@@ -15,8 +16,33 @@ const io = socketIO(server, {
   pingInterval: 25000
 });
 
+// Enable compression for better performance
+app.use(compression());
+
+// Security and SEO headers
+app.use((req, res, next) => {
+  // Security headers
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  
+  // Cache control for static assets
+  if (req.url.match(/\.(js|css|jpg|jpeg|png|gif|ico|webp|svg)$/)) {
+    res.setHeader('Cache-Control', 'public, max-age=31536000'); // 1 year
+  } else if (req.url.match(/\.(html)$/)) {
+    res.setHeader('Cache-Control', 'public, max-age=3600'); // 1 hour
+  }
+  
+  next();
+});
+
 app.use(cors());
-app.use(express.static('public'));
+app.use(express.static('public', {
+  maxAge: '1d', // Cache static files for 1 day
+  etag: true,
+  lastModified: true
+}));
 
 // Serve the main page
 app.get('/', (req, res) => {

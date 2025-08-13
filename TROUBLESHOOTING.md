@@ -1,4 +1,4 @@
-# Troubleshooting Guide - Omegle Clone
+# Troubleshooting Guide - Omeglee
 
 ## Common Connection Issues and Solutions
 

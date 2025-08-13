@@ -1,0 +1,30 @@
+Favicon Requirements for Omeglee
+================================
+
+To complete the branding, create the following favicon files:
+
+1. favicon.ico - 32x32 pixels
+   - Use the letter "O" in a modern, clean font
+   - Use the brand color #0066cc (blue)
+   - White or transparent background
+
+2. apple-touch-icon.png - 180x180 pixels
+   - Same design as favicon but larger
+   - Add subtle gradient or shadow for depth
+
+3. icon-192.png - 192x192 pixels (for PWA)
+   - Same design, optimized for mobile
+
+4. icon-512.png - 512x512 pixels (for PWA)
+   - High-resolution version for app stores
+
+Design suggestions:
+- Consider a stylized "O" that resembles a video camera lens
+- Or use "O" with two dots inside to represent people connecting
+- Keep it simple and recognizable at small sizes
+
+You can create these using:
+- Canva (free online tool)
+- Figma (free design tool)
+- favicon.io (generates all sizes from one image)
+- realfavicongenerator.net (comprehensive favicon generator)

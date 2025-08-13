@@ -1,15 +1,25 @@
-// Socket.io connection
-// Update this URL to your Railway deployment URL
-const SOCKET_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:3000' 
-    : window.location.origin;
+// Lazy load Socket.io connection
+let socket = null;
+let socketLoaded = false;
 
-const socket = io(SOCKET_URL, {
-    reconnection: true,
-    reconnectionDelay: 1000,
-    reconnectionDelayMax: 5000,
-    reconnectionAttempts: 5
-});
+// Initialize socket connection only when needed
+function initializeSocket() {
+    if (socketLoaded) return;
+    
+    const SOCKET_URL = window.location.hostname === 'localhost' 
+        ? 'http://localhost:3000' 
+        : window.location.origin;
+
+    socket = io(SOCKET_URL, {
+        reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
+        reconnectionAttempts: 5
+    });
+    
+    socketLoaded = true;
+    setupSocketListeners();
+}
 
 // DOM elements
 const welcomeScreen = document.getElementById('welcome-screen');
@@ -233,6 +243,11 @@ function cleanupConnection() {
 
 // Event Listeners
 startBtn.addEventListener('click', async () => {
+    // Initialize socket connection on first user interaction
+    if (!socketLoaded) {
+        initializeSocket();
+    }
+    
     const mediaInitialized = await initializeMedia();
     if (mediaInitialized) {
         showScreen(waitingScreen);
@@ -241,7 +256,7 @@ startBtn.addEventListener('click', async () => {
 });
 
 cancelBtn.addEventListener('click', () => {
-    socket.emit('disconnect-partner');
+    if (socket) socket.emit('disconnect-partner');
     showScreen(welcomeScreen);
     if (localStream) {
         localStream.getTracks().forEach(track => track.stop());
@@ -251,7 +266,7 @@ cancelBtn.addEventListener('click', () => {
 });
 
 disconnectBtn.addEventListener('click', () => {
-    socket.emit('disconnect-partner');
+    if (socket) socket.emit('disconnect-partner');
     cleanupConnection();
     showScreen(welcomeScreen);
     if (localStream) {
@@ -262,38 +277,41 @@ disconnectBtn.addEventListener('click', () => {
 });
 
 nextBtn.addEventListener('click', () => {
-    socket.emit('disconnect-partner');
-    cleanupConnection();
-    showScreen(waitingScreen);
-    socket.emit('find-partner');
+    if (socket) {
+        socket.emit('disconnect-partner');
+        cleanupConnection();
+        showScreen(waitingScreen);
+        socket.emit('find-partner');
+    }
 });
 
-// Socket event listeners
-socket.on('connect', () => {
-    log('INFO', 'Connected to server');
-});
+// Setup socket event listeners
+function setupSocketListeners() {
+    socket.on('connect', () => {
+        log('INFO', 'Connected to server');
+    });
 
-socket.on('disconnect', () => {
-    log('WARN', 'Disconnected from server');
-});
+    socket.on('disconnect', () => {
+        log('WARN', 'Disconnected from server');
+    });
 
-socket.on('connection-confirmed', (data) => {
-    log('INFO', 'Connection confirmed', { userId: data.userId });
-});
+    socket.on('connection-confirmed', (data) => {
+        log('INFO', 'Connection confirmed', { userId: data.userId });
+    });
 
-socket.on('waiting', () => {
-    log('INFO', 'Waiting for partner');
-    document.getElementById('queue-info').style.display = 'none';
-});
+    socket.on('waiting', () => {
+        log('INFO', 'Waiting for partner');
+        document.getElementById('queue-info').style.display = 'none';
+    });
 
-socket.on('queue-update', (data) => {
-    log('INFO', 'Queue position updated', data);
-    document.getElementById('queue-position').textContent = data.position;
-    document.getElementById('queue-total').textContent = data.total;
-    document.getElementById('queue-info').style.display = 'block';
-});
+    socket.on('queue-update', (data) => {
+        log('INFO', 'Queue position updated', data);
+        document.getElementById('queue-position').textContent = data.position;
+        document.getElementById('queue-total').textContent = data.total;
+        document.getElementById('queue-info').style.display = 'block';
+    });
 
-socket.on('partner-found', async (data) => {
+    socket.on('partner-found', async (data) => {
     log('SUCCESS', 'Partner found', { partnerId: data.partnerId, isInitiator: data.isInitiator });
     currentPartner = data.partnerId;
     showScreen(chatScreen);
@@ -422,23 +440,24 @@ socket.on('ice-candidate', async (data) => {
     }
 });
 
-socket.on('partner-disconnected', () => {
-    log('INFO', 'Partner disconnected');
-    cleanupConnection();
-    alert('Your partner has disconnected.');
-    showScreen(welcomeScreen);
-});
+    socket.on('partner-disconnected', () => {
+        log('INFO', 'Partner disconnected');
+        cleanupConnection();
+        alert('Your partner has disconnected.');
+        showScreen(welcomeScreen);
+    });
 
-// Add heartbeat to maintain connection
-setInterval(() => {
-    if (socket.connected) {
-        socket.emit('heartbeat');
-    }
-}, 30000);
+    // Add heartbeat to maintain connection
+    setInterval(() => {
+        if (socket && socket.connected) {
+            socket.emit('heartbeat');
+        }
+    }, 30000);
+}
 
 // Handle page unload
 window.addEventListener('beforeunload', () => {
-    if (currentPartner) {
+    if (currentPartner && socket) {
         socket.emit('disconnect-partner');
     }
     if (localStream) {

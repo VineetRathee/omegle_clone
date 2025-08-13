@@ -1,0 +1,41 @@
+{
+  "name": "Omeglee - Free Random Video Chat",
+  "short_name": "Omeglee",
+  "description": "Connect instantly with strangers worldwide through free random video chat. No registration required.",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#0066cc",
+  "background_color": "#ffffff",
+  "orientation": "portrait",
+  "categories": ["social", "communication", "video"],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot1.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "label": "Video chat interface"
+    },
+    {
+      "src": "/screenshot2.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "label": "Connect with strangers"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

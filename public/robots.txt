@@ -1,0 +1,25 @@
+# Robots.txt for Omeglee
+# Allow all search engines to crawl the site
+
+User-agent: *
+Allow: /
+Crawl-delay: 1
+
+# Specific rules for major search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Block bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+# Sitemap location
+Sitemap: https://your-domain.com/sitemap.xml
