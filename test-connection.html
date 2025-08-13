@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connection Test - Omegle Clone</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .log-container {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 3px;
+        }
+        .log-info { color: #0066cc; }
+        .log-error { color: #dc3545; background: #ffe0e0; }
+        .log-success { color: #28a745; }
+        .log-debug { color: #666; }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #0066cc;
+            color: white;
+        }
+        button:hover {
+            background-color: #0052a3;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background: #e3f2fd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Connection Test Tool</h1>
+    
+    <div class="test-container">
+        <h2>Test Controls</h2>
+        <button onclick="openNewClient()">Open New Client</button>
+        <button onclick="testMultipleClients()">Test 5 Clients</button>
+        <button onclick="clearLogs()">Clear Logs</button>
+        
+        <div class="status">
+            <p>Status: <span id="status">Ready</span></p>
+            <p>Open Clients: <span id="client-count">0</span></p>
+        </div>
+    </div>
+    
+    <div class="test-container">
+        <h2>Connection Logs</h2>
+        <div class="log-container" id="logs"></div>
+    </div>
+    
+    <div class="test-container">
+        <h2>Test Instructions</h2>
+        <ol>
+            <li>Start the server: <code>npm start</code></li>
+            <li>Open this test page in your browser</li>
+            <li>Click "Open New Client" to open individual clients</li>
+            <li>Click "Test 5 Clients" to test the queue system</li>
+            <li>Watch the logs for connection issues</li>
+            <li>Check the browser console in each client window for detailed logs</li>
+        </ol>
+        
+        <h3>What to look for:</h3>
+        <ul>
+            <li>✅ Clients should connect in pairs automatically</li>
+            <li>✅ Queue position should update for waiting users</li>
+            <li>✅ Video should appear for both users when connected</li>
+            <li>✅ Connection state should show "Connected" when successful</li>
+            <li>❌ Watch for "stuck on connecting" messages</li>
+            <li>❌ Check if remote video fails to appear</li>
+        </ul>
+    </div>
+
+    <script>
+        let clientWindows = [];
+        
+        function log(level, message) {
+            const logContainer = document.getElementById('logs');
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${level.toLowerCase()}`;
+            const timestamp = new Date().toLocaleTimeString();
+            entry.textContent = `[${timestamp}] [${level}] ${message}`;
+            logContainer.appendChild(entry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+        
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+        }
+        
+        function updateClientCount() {
+            const count = clientWindows.filter(w => w && !w.closed).length;
+            document.getElementById('client-count').textContent = count;
+        }
+        
+        function openNewClient() {
+            const url = window.location.origin;
+            const clientWindow = window.open(url, '_blank', 'width=1200,height=800');
+            
+            if (clientWindow) {
+                clientWindows.push(clientWindow);
+                log('INFO', `Opened new client window #${clientWindows.length}`);
+                updateClientCount();
+                
+                // Monitor window
+                const checkInterval = setInterval(() => {
+                    if (clientWindow.closed) {
+                        clearInterval(checkInterval);
+                        updateClientCount();
+                        log('INFO', 'Client window closed');
+                    }
+                }, 1000);
+            } else {
+                log('ERROR', 'Failed to open client window - popup may be blocked');
+            }
+        }
+        
+        function testMultipleClients() {
+            updateStatus('Opening 5 test clients...');
+            log('INFO', 'Starting multiple client test');
+            
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    openNewClient();
+                    if (i === 4) {
+                        updateStatus('Test clients opened - check queue behavior');
+                        log('SUCCESS', 'All test clients opened');
+                    }
+                }, i * 500);
+            }
+        }
+        
+        function clearLogs() {
+            document.getElementById('logs').innerHTML = '';
+            log('INFO', 'Logs cleared');
+        }
+        
+        // Initial log
+        log('INFO', 'Connection test tool ready');
+        
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            clientWindows.forEach(w => {
+                if (w && !w.closed) {
+                    w.close();
+                }
+            });
+        });
+        
+        // Update client count periodically
+        setInterval(updateClientCount, 2000);
+    </script>
+</body>
+</html>
